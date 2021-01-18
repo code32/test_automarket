@@ -1,0 +1,31 @@
+version: '3.7'
+
+services:
+  web:
+    container_name: lab_test_2__web
+    build:
+      context: ./php
+      dockerfile: Dockerfile
+    volumes:
+      - ./src/:/var/www/html/
+      - ./log/:/var/log/apache2/
+      - ./php/:/usr/local/etc/php/
+    ports:
+      - "80:80"
+    links:
+      - db:database
+
+  db:
+    container_name: lab_test_2__db
+    image: mariadb:10.5.8
+    restart: always
+    environment:
+      MYSQL_USER: root
+      MYSQL_ROOT_PASSWORD: root
+      MYSQL_ROOT_HOST: '%'
+    volumes:
+      - ./db/config:/etc/mysql/conf.d
+      - ./db/data/:/var/lib/mysql/
+      - ./log/:/var/log/mysql/
+    ports:
+      - "50417:3306"
