@@ -40,6 +40,7 @@ class CarRepository extends ServiceEntityRepository
     /**
      * Get cars by filter
      *
+     * @param array $options
      * @return \App\Entity\Car[]
      */
     public function getFilterCars(Array $options)
@@ -87,6 +88,7 @@ class CarRepository extends ServiceEntityRepository
         return $queryBuilder->getQuery()->getResult();
     }
 
+
     /**
      * Mileage over 150000 km reduction on 30%
      *
@@ -96,7 +98,7 @@ class CarRepository extends ServiceEntityRepository
      * @throws \Doctrine\ORM\ORMException
      * @throws \Doctrine\ORM\OptimisticLockException
      */
-    public function mileageReduction($mileage, $reductionPercentage)
+    public function mileageReduction(float $mileage, float $reductionPercentage)
     {
         /** @var EntityManager $em */
         $em = $this->getEntityManager();
@@ -115,7 +117,13 @@ class CarRepository extends ServiceEntityRepository
     }
 
 
-    private function getCarsByMileageMore($mileage)
+    /**
+     * Get cars whose mileage exceeds
+     *
+     * @param float $mileage Vehicle mileage
+     * @return mixed
+     */
+    private function getCarsByMileageMore(float $mileage)
     {
         return $this->createQueryBuilder('c')
             ->andWhere('c.mileage > :mileage_target')->setParameter('mileage_target', $mileage)
@@ -123,33 +131,4 @@ class CarRepository extends ServiceEntityRepository
             ->getResult()
             ;
     }
-
-    // /**
-    //  * @return Car[] Returns an array of Car objects
-    //  */
-    /*
-    public function findByExampleField($value)
-    {
-        return $this->createQueryBuilder('c')
-            ->andWhere('c.exampleField = :val')
-            ->setParameter('val', $value)
-            ->orderBy('c.id', 'ASC')
-            ->setMaxResults(10)
-            ->getQuery()
-            ->getResult()
-        ;
-    }
-    */
-
-    /*
-    public function findOneBySomeField($value): ?Car
-    {
-        return $this->createQueryBuilder('c')
-            ->andWhere('c.exampleField = :val')
-            ->setParameter('val', $value)
-            ->getQuery()
-            ->getOneOrNullResult()
-        ;
-    }
-    */
 }
