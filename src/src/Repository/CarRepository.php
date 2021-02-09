@@ -90,7 +90,7 @@ class CarRepository extends ServiceEntityRepository
 
 
     /**
-     * Mileage over 150000 km reduction on 30%
+     * Mileage over $mileage km reduction on $reductionPercentage percentage
      *
      * @param $mileage
      * @param $reductionPercentage
